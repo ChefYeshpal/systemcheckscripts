@@ -10,6 +10,8 @@
 # Interval's are set for 5 minutes
 
 : << 'USAGE'
+
+I've made a "testdir_NOTrepo" folder in the previous directory of this folder, so that none of the data stored (other than the pid) is sent to this repository. I suggest you make something like this too if you are thinking of using this script.
 run anything you want with `./battery.sh [variable]`
 
 Variables
