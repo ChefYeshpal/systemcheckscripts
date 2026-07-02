@@ -10,14 +10,13 @@
 # Interval's are set for 5 minutes
 
 : << 'USAGE'
-run anything you want with ./battery.sh [variable]
+run anything you want with `./battery.sh [variable]`
 
 Variables
 1. runtime: reports how long the logger has been running
 2. showlog: prints the csv file
 3. killall: stops the background loggerand removes it's tracking files
 4. runfor [duration]: runs for that duration of time (in minutes), then notifies you when the time is up
-
 
 USAGE
 
