@@ -84,12 +84,58 @@ parse_duration() {
 	return 1
 }
 
+supports_color() {
+	[[ -t 1 ]]
+}
+
+colorize() {
+	local text="$1"
+	shift
+	local prefix=""
+	local code
+
+	if ! supports_color || [[ $# -eq 0 ]]; then
+		printf '%s' "${text}"
+		return
+	fi
+
+	for code in "$@"; do
+		prefix+="${code}"
+	done
+
+	printf '%b%s%b' "${prefix}" "${text}" '\033[0m'
+}
+
 print_usage() {
-	awk '
-		/^: << '\''USAGE'\''$/ { in_usage=1; next }
-		/^USAGE$/ { in_usage=0; next }
-		in_usage { print }
-	' "${BASH_SOURCE[0]}"
+	local divider='========================================================================'
+	local sub_divider='------------------------------------------------------------------------'
+
+	if ! supports_color; then
+		awk '
+			/^: << '\''USAGE'\''$/ { in_usage=1; next }
+			/^USAGE$/ { in_usage=0; next }
+			in_usage { print }
+		' "${BASH_SOURCE[0]}"
+		return
+	fi
+
+	printf '%s\n' "${divider}"
+	printf '%s\n' "$(colorize 'Battery Script Help' '\033[1m' '\033[35m')"
+	printf '%s\n' "${divider}"
+	printf '%s\n' "$(colorize 'Purpose' '\033[1m' '\033[32m')"
+	printf '%s\n' 'Used to measure battery life in systems.'
+	printf '%s\n' "Interval's are set for 5 minutes."
+	printf '%s\n' "${sub_divider}"
+	printf '%s\n' "$(colorize 'Usage' '\033[1m' '\033[32m')"
+	printf '%s\n' './battery.sh [variable]'
+	printf '%s\n' "${sub_divider}"
+	printf '%s\n' "$(colorize 'Variables' '\033[1m' '\033[32m')"
+	printf '%s\n' "$(colorize '1. help' '\033[33m') - prints a help message"
+	printf '%s\n' "$(colorize '2. runtime' '\033[33m') - reports how long the logger has been running"
+	printf '%s\n' "$(colorize '3. showlog' '\033[33m') - prints the csv file"
+	printf '%s\n' "$(colorize '4. killall' '\033[33m') - stops the background logger and removes its tracking files"
+	printf '%s\n' "$(colorize '5. runfor [duration]' '\033[33m') - runs for that duration of time (in minutes), then notifies you when the time is up"
+	printf '%s\n' "${divider}"
 }
 
 is_running() {
