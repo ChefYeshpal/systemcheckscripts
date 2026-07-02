@@ -5,9 +5,9 @@
 # Last Modified By: ChefYeshpal
 
 # Purpose
-# Used to graph battery logs stored locally in test_filefolder/batterytest
+# Used to graph battery logs stored locally in test_filefolder/batterytest/
 # No data is sent anywhere; everything stays on your system
-# This script will create a file with name [Date in UTC of created CSV]_UTC_[Date and time in UTC of png created]_UTC_graph.png in the test_filefolder/batterytest directory
+# This script will create a file with name [Date in UTC of created CSV]_UTC_[Date and time in UTC of png created]_UTC_graph.png in the test_filefolder/batterytest/ directory
 
 
 
