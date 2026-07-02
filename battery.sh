@@ -11,14 +11,18 @@
 
 : << 'USAGE'
 
-I've made a "testdir_NOTrepo" folder in the previous directory of this folder, so that none of the data stored (other than the pid) is sent to this repository. I suggest you make something like this too if you are thinking of using this script.
-run anything you want with `./battery.sh [variable]`
+## No data is sent to any server, all data is stored locally on YOUR system. ##
+
+I've made a "test_filefolder" folder in this directory, and already added some arguments in the .gitignore file to ignore the log files. It would be advised to make that folder in your own directory as well to consolidate all your data.
+
+To run a command, you can use the arguments: ./battery.sh [variable]
 
 Variables
-1. runtime: reports how long the logger has been running
-2. showlog: prints the csv file
-3. killall: stops the background loggerand removes it's tracking files
-4. runfor [duration]: runs for that duration of time (in minutes), then notifies you when the time is up
+1. help: prints a help message
+2. runtime: reports how long the logger has been running
+3. showlog: prints the csv file
+4. killall: stops the background loggerand removes it's tracking files
+5. runfor [duration]: runs for that duration of time (in minutes), then notifies you when the time is up
 
 USAGE
 
@@ -28,7 +32,7 @@ set -u
 # setting variables for easier use
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 log_date_utc="$(date -u +%Y%m%d)"
-output_file="${script_dir}/../testdir_NOTrepo/${log_date_utc}_UTC_batterylog.csv"
+output_file="${script_dir}/test_filefolder/${log_date_utc}_UTC_batterylog.csv"
 pid_file="${script_dir}/.battery_logger.pid"
 state_file="${script_dir}/.battery_logger.state"
 
@@ -78,6 +82,14 @@ parse_duration() {
 	fi
 
 	return 1
+}
+
+print_usage() {
+	awk '
+		/^: << '\''USAGE'\''$/ { in_usage=1; next }
+		/^USAGE$/ { in_usage=0; next }
+		in_usage { print }
+	' "${BASH_SOURCE[0]}"
 }
 
 is_running() {
@@ -156,7 +168,10 @@ start_logger() {
 	notify_user 'Battery recording started' "Saving to ${output_file}"
 }
 
-if [[ "${1:-}" == "runtime" ]]; then
+if [[ "${1:-}" == "help" || "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+	print_usage
+	exit 0
+elif [[ "${1:-}" == "runtime" ]]; then
 	show_runtime
 	exit $?
 elif [[ "${1:-}" == "showlog" ]]; then
