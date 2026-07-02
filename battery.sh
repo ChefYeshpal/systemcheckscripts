@@ -13,7 +13,7 @@
 
 ## No data is sent to any server, all data is stored locally on YOUR system. ##
 
-I've made a "test_filefolder" folder in this directory, and already added some arguments in the .gitignore file to ignore the log files. It would be advised to make that folder in your own directory as well to consolidate all your data.
+I've made a "test_filefolder/batterytest" folder in this directory, and already added some arguments in the .gitignore file to ignore the log files. It would be advised to make that folder in your own directory as well to consolidate all your data.
 
 To run a command, you can use the arguments: ./battery.sh [variable]
 
@@ -32,7 +32,7 @@ set -u
 # setting variables for easier use
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 log_date_utc="$(date -u +%Y%m%d)"
-output_file="${script_dir}/test_filefolder/${log_date_utc}_UTC_batterylog.csv"
+output_file="${script_dir}/test_filefolder/batterytest/${log_date_utc}_UTC_batterylog.csv"
 pid_file="${script_dir}/.battery_logger.pid"
 state_file="${script_dir}/.battery_logger.state"
 
