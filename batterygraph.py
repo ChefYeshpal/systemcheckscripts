@@ -39,6 +39,14 @@ If no argument is provided, the script will list the CSV files and ask you
 which one to plot.
 """
 
+ANSI_RESET = "\033[0m"
+ANSI_BOLD = "\033[1m"
+ANSI_DIM = "\033[2m"
+ANSI_CYAN = "\033[36m"
+ANSI_GREEN = "\033[32m"
+ANSI_YELLOW = "\033[33m"
+ANSI_MAGENTA = "\033[35m"
+
 import csv
 import re
 import sys
@@ -67,8 +75,51 @@ class LogFile:
     timestamp: datetime
 
 
+def supports_color() -> bool:
+    return sys.stdout.isatty()
+
+
+def colorize(text: str, *codes: str) -> str:
+    if not supports_color() or not codes:
+        return text
+
+    return f"{''.join(codes)}{text}{ANSI_RESET}"
+
+
 def print_usage() -> None:
-    print(USAGE_TEXT.rstrip())
+    divider = "=" * 72
+    sub_divider = "-" * 72
+
+    if not supports_color():
+        print(USAGE_TEXT.rstrip())
+        return
+
+    print(colorize(divider, ANSI_CYAN))
+    print(colorize("Battery Graph Help", ANSI_BOLD, ANSI_MAGENTA))
+    print(colorize(divider, ANSI_CYAN))
+    print(colorize("Purpose", ANSI_BOLD, ANSI_GREEN))
+    print("This script scans the local test_filefolder/batterytest directory for CSV logs,")
+    print("lists them newest-first, and plots the file you choose.")
+    print(colorize(sub_divider, ANSI_CYAN))
+    print(colorize("Requirements", ANSI_BOLD, ANSI_GREEN))
+    print("You will need to install these packages (preferably via pip):")
+    print(colorize("1. matplotlib", ANSI_YELLOW))
+    print("It is preferred to use a virtual environment.")
+    print(colorize(sub_divider, ANSI_CYAN))
+    print(colorize("Notes", ANSI_BOLD, ANSI_GREEN))
+    print("If no interactive matplotlib backend is available, the graph is saved as a PNG")
+    print("next to the CSV file and the script will try to open it automatically.")
+    print(colorize(sub_divider, ANSI_CYAN))
+    print(colorize("Usage", ANSI_BOLD, ANSI_GREEN))
+    print("./batterygraph.py [variable]")
+    print(colorize(sub_divider, ANSI_CYAN))
+    print(colorize("Variables", ANSI_BOLD, ANSI_GREEN))
+    print(colorize("1. help", ANSI_YELLOW), "prints a help message")
+    print(colorize("2. list", ANSI_YELLOW), "lists the available csv files without plotting")
+    print(colorize("3. plot [file number or path]", ANSI_YELLOW), "lists the files and plots the selected csv file directly")
+    print("If no argument is provided, the script will list the CSV files and ask you")
+    print("which one to plot.")
+    print(colorize(divider, ANSI_CYAN))
 
 
 def parse_filename_timestamp(path: Path) -> datetime:
