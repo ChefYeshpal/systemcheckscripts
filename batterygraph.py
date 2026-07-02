@@ -7,6 +7,9 @@
 # Purpose
 # Used to graph battery logs stored locally in test_filefolder/batterytest
 # No data is sent anywhere; everything stays on your system
+# This script will create a file with name [Date in UTC of created CSV]_UTC_[Date and time in UTC of png created]_UTC_graph.png in the test_filefolder/batterytest directory
+
+
 
 from __future__ import annotations
 
@@ -171,6 +174,11 @@ def read_battery_points(csv_path: Path) -> tuple[list[datetime], list[float]]:
     return timestamps, percentages
 
 
+def build_output_path(entry: LogFile) -> Path:
+    created_timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M_UTC")
+    return entry.path.with_name(f"{entry.path.stem}_{created_timestamp}_graph.png")
+
+
 def plot_csv(entry: LogFile) -> None:
     if plt is None or mdates is None:
         print("matplotlib is not installed. Install it to plot battery graphs.")
@@ -197,7 +205,7 @@ def plot_csv(entry: LogFile) -> None:
 
     backend_name = plt.get_backend().lower()
     if "agg" in backend_name:
-        output_path = entry.path.with_name(f"{entry.path.stem}_graph.png")
+        output_path = build_output_path(entry)
         figure.savefig(output_path, dpi=150, bbox_inches="tight")
         print(f"Saved plot to {output_path}")
 
