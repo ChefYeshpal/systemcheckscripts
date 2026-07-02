@@ -3,3 +3,5 @@
 *.csv
 *.log
 test_filefolder/
+venv/
+__pycache__/
