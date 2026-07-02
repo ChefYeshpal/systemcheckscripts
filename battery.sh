@@ -5,7 +5,7 @@
 # Last Modified: 02-07-2026
 # Last Modified By: ChefYeshpal
 
-# Porpurse
+# Purpose
 # Used to measure battery life in systems
 # Interval's are set for 5 minutes
 
