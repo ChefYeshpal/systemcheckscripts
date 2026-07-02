@@ -1,9 +1,20 @@
 #!/usr/bin/env bash
 ########################################################################
+# Created Date: 02-07-2026
+# By: ChefYeshpal
+# Last Modified: 02-07-2026
+# Last Modified By: ChefYeshpal
+
+# Porpurse
+# Used to measure battery life in systems
+# Interval's are set for 5 minutes
+
+
 
 
 set -u
 
+# setting variables for easier use
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 output_file="${script_dir}/../testdir_NOTrepo/battery_log.csv"
 pid_file="${script_dir}/.battery_logger.pid"
