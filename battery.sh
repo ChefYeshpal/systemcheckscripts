@@ -9,14 +9,25 @@
 # Used to measure battery life in systems
 # Interval's are set for 5 minutes
 
+: << 'USAGE'
+run anything you want with ./battery.sh [variable]
 
+Variables
+1. runtime: reports how long the logger has been running
+2. showlog: prints the csv file
+3. killall: stops the background loggerand removes it's tracking files
+4. runfor [duration]: runs for that duration of time (in minutes), then notifies you when the time is up
+
+
+USAGE
 
 
 set -u
 
 # setting variables for easier use
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-output_file="${script_dir}/../testdir_NOTrepo/battery_log.csv"
+log_date_utc="$(date -u +%Y%m%d)"
+output_file="${script_dir}/../testdir_NOTrepo/${log_date_utc}_UTC_batterylog.csv"
 pid_file="${script_dir}/.battery_logger.pid"
 state_file="${script_dir}/.battery_logger.state"
 
