@@ -214,6 +214,11 @@ def read_battery_points(csv_path: Path) -> tuple[list[datetime], list[float]]:
             except ValueError:
                 continue
 
+            if timestamp.tzinfo is None:
+                timestamp = timestamp.replace(tzinfo=timezone.utc)
+            else:
+                timestamp = timestamp.astimezone(timezone.utc)
+
             try:
                 percentage = float(raw_percentage.rstrip("%"))
             except ValueError:
@@ -242,7 +247,7 @@ def plot_csv(entry: LogFile) -> None:
     figure, axis = plt.subplots(figsize=(12, 6))
     axis.plot(timestamps, percentages, marker="o", linewidth=1.5, markersize=3)
     axis.set_title(f"Battery charge over time - {entry.path.name}")
-    axis.set_xlabel("Time")
+    axis.set_xlabel("Time (UTC)")
     axis.set_ylabel("Charge %")
     axis.set_ylim(0, 100)
     axis.grid(True, linestyle="--", alpha=0.35)
