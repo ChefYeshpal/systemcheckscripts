@@ -1,7 +1,14 @@
-*.pid
-*.state
-*.csv
-*.log
+# runtime files (pid/state of the background loggers)
+.run/
+
+# your measurements and generated reports stay on your machine
+logs/
+reports/
+
+# location used by the first version of battery.sh
 test_filefolder/
+
+# python
 venv/
 __pycache__/
+*.pyc
